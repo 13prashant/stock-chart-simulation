@@ -1,0 +1,27 @@
+.stocks-chart {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart {
+  background-color: white;
+  padding: 1rem;
+  width: 100%;
+  max-width: 90vw;
+  box-shadow: 10px 27px 85px -11px rgba(0, 0, 0, 0.3);
+}
+
+.info {
+  background-color: rgba(100, 145, 203, 0.3);
+  border: 1px solid rgba(100, 145, 203, 0.7);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  min-width: 70%;
+  margin: 1rem 0;
+}
+
+.info__text {
+  text-align: center;
+}

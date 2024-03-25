@@ -4,6 +4,11 @@ This is the react project simulating stock chart.
 
 ## Usage
 
+### Get API KEY from Alpha Vantage
+
+- Visit https://www.alphavantage.co/support/#api-key
+- Get API KEY & put it into .env
+
 ### Install Dependencies
 
 ```bash
