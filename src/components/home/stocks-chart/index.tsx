@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useApi from "../../../hooks/useApi";
 import useIntervalApi from "../../../hooks/useIntervalApi";
 import CandleChart from "./CandleChart";
@@ -6,6 +6,8 @@ import { getFormattedStockData } from "../helpers";
 
 export default function StocksChart() {
   const [equity] = useState("IBM"); // Put equity you want stock data for
+  const [hasIntradayStocksLoadedOnce, setHasIntradayStocksLoadedOnce] =
+    useState(false);
 
   const {
     data: monthlyStocks,
@@ -26,6 +28,17 @@ export default function StocksChart() {
       import.meta.env.VITE_ALPHA_VANTAGE_API_KEY
     }`
   );
+
+  useEffect(() => {
+    // Set the flag to true once intraday data has loaded at least once
+    if (!areIntradayStocksLoading && intradayStocks) {
+      setHasIntradayStocksLoadedOnce(true);
+    }
+  }, [areIntradayStocksLoading, intradayStocks]);
+
+  // Check if intraday data has been loaded at least once
+  const shouldShowIntradayLoading =
+    !hasIntradayStocksLoadedOnce && areIntradayStocksLoading;
 
   const monthlyStocksData = useMemo(
     () => getFormattedStockData(monthlyStocks, "Monthly Time Series"),
@@ -59,7 +72,7 @@ export default function StocksChart() {
         </>
       )}
 
-      {areIntradayStocksLoading ? (
+      {shouldShowIntradayLoading ? (
         <h3>Loading...</h3>
       ) : intradayStocksError ? (
         <h3>{intradayStocksError}</h3>
