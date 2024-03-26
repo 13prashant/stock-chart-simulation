@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useApi from "../../../hooks/useApi";
 import useIntervalApi from "../../../hooks/useIntervalApi";
 import CandleChart from "./CandleChart";
@@ -27,13 +27,23 @@ export default function StocksChart() {
     }`
   );
 
+  const monthlyStocksData = useMemo(
+    () => getFormattedStockData(monthlyStocks, "Monthly Time Series"),
+    [monthlyStocks]
+  );
+
+  const intradayStocksData = useMemo(
+    () => getFormattedStockData(intradayStocks, "Time Series (1min)"),
+    [intradayStocks]
+  );
+
   return (
     <section className="stocks-chart">
       {areMonthlyStocksLoading ? (
         <h3>Loading...</h3>
       ) : monthlyStocksError ? (
         <h3>{monthlyStocksError}</h3>
-      ) : !monthlyStocks?.length ? (
+      ) : !monthlyStocksData?.length ? (
         <h3>No data available</h3>
       ) : (
         <>
@@ -43,14 +53,8 @@ export default function StocksChart() {
 
           <CandleChart
             id="monthlyCandles"
-            seriesData={getFormattedStockData(
-              monthlyStocks,
-              "Monthly Time Series"
-            )}
-            seriesDataLinear={getFormattedStockData(
-              monthlyStocks,
-              "Monthly Time Series"
-            )}
+            seriesData={monthlyStocksData}
+            seriesDataLinear={monthlyStocksData}
           />
         </>
       )}
@@ -59,7 +63,7 @@ export default function StocksChart() {
         <h3>Loading...</h3>
       ) : intradayStocksError ? (
         <h3>{intradayStocksError}</h3>
-      ) : !intradayStocks?.length ? (
+      ) : !intradayStocksData?.length ? (
         <h3>No data available</h3>
       ) : (
         <>
@@ -69,14 +73,8 @@ export default function StocksChart() {
 
           <CandleChart
             id="intradayCandles"
-            seriesData={getFormattedStockData(
-              intradayStocks,
-              "Time Series (1min)"
-            )}
-            seriesDataLinear={getFormattedStockData(
-              intradayStocks,
-              "Time Series (1min)"
-            )}
+            seriesData={intradayStocksData}
+            seriesDataLinear={intradayStocksData}
           />
         </>
       )}

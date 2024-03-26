@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getFormattedStockData = (stockData: any, timeSeries: string) => {
+  if (!stockData) return [];
+
   const timeSeriesObj = stockData[timeSeries];
   const res = [];
 
